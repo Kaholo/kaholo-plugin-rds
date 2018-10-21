@@ -1,0 +1,121 @@
+{
+  "name": "AwsRds",
+  "type": "executer",
+  "main": "app.js",
+  "execProgram": "node",
+  "exposeRoute": false,
+  "imgUrl": "rdsicon.png",
+  "version": "1.0.0",
+  "methods": [
+    {
+      "name": "createDbInstance",
+      "viewName": "Create DB instance",
+      "params": [
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "viewName": "Access key",
+          "type": "string"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "viewName": "Secret key",
+          "type": "string"
+        },
+        {
+          "name": "REGION",
+          "viewName": "Region",
+          "type": "collection",
+          "options": [
+            {
+              "id": "us-east-1",
+              "name": "US East (N. Virginia)"
+            },
+            {
+              "id": "us-west-1",
+              "name": "US West (N. California)"
+            },
+            {
+              "id": "us-west-2",
+              "name": "US West (Oregon)"
+            },
+            {
+              "id": "ap-southeast-1",
+              "name": "Asia Pacific (Singapore)"
+            },
+            {
+              "id": "ap-southeast-2",
+              "name": "Asia Pacific (Sydney)"
+            },
+            {
+              "id": "ap-northeast-1",
+              "name": "Asia Pacific (Tokyo)"
+            },
+            {
+              "id": "eu-west-1",
+              "name": "EU (Ireland)"
+            },
+            {
+              "id": "sa-east-1",
+              "name": "South America (São Paulo)"
+            },
+            {
+              "id": "eu-central-1",
+              "name": "EU (Frankfurt)"
+            }
+          ]
+        },
+        {
+          "name": "DB_INSTANCE_CLASS",
+          "viewName": "DB Instance Class",
+          "type": "string"
+        },
+        {
+          "name": "DB_INSTANCE_IDENTIFIER",
+          "viewName": "DB Instance Identifier",
+          "type": "string"
+        },
+        {
+          "name": "ENGINE",
+          "viewName": "Database Engine",
+          "type": "string"
+        },
+        {
+          "name": "ADDITIONAL_VALUES",
+          "viewName": "Additional Object of values",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "deleteDbInstances",
+      "viewName": "Delete DB instance",
+      "params": [
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "viewName": "Access key",
+          "type": "string"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "viewName": "Secret key",
+          "type": "string"
+        },
+        {
+          "name": "DB_INSTANCE_IDENTIFIER",
+          "viewName": "DB Instance Identifier",
+          "type": "string"
+        },
+        {
+          "name": "SKIP_FINAL_SNAPSHOT",
+          "viewName": "Skip Final Snapshot",
+          "type": "boolean"
+        },
+        {
+          "name": "FINAL_DB_SNAPSHOT_IDENTIFIER",
+          "viewName": "Final DB Snapshot Identifier",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}
