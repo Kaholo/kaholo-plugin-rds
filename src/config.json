@@ -24,7 +24,7 @@
         {
           "name": "REGION",
           "viewName": "Region",
-          "type": "collection",
+          "type": "options",
           "options": [
             {
               "id": "us-east-1",
