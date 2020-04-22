@@ -5,7 +5,19 @@
   "execProgram": "node",
   "exposeRoute": false,
   "imgUrl": "rdsicon.png",
-  "version": "1.0.0",
+  "version": "1.3.0",
+  "settings" : [
+    {
+      "name": "AWS_ACCESS_KEY_ID",
+      "viewName": "Access key",
+      "type": "vault"
+    },
+    {
+      "name": "AWS_SECRET_ACCESS_KEY",
+      "viewName": "Secret key",
+      "type": "vault"
+    }
+  ],
   "methods": [
     {
       "name": "createDbInstance",
@@ -14,12 +26,12 @@
         {
           "name": "AWS_ACCESS_KEY_ID",
           "viewName": "Access key",
-          "type": "string"
+          "type": "vault"
         },
         {
           "name": "AWS_SECRET_ACCESS_KEY",
           "viewName": "Secret key",
-          "type": "string"
+          "type": "vault"
         },
         {
           "name": "REGION",
@@ -113,6 +125,100 @@
         {
           "name": "FINAL_DB_SNAPSHOT_IDENTIFIER",
           "viewName": "Final DB Snapshot Identifier",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "createDbInstance",
+      "viewName": "Create DB instance",
+      "params": [
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "viewName": "Access key",
+          "type": "vault"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "viewName": "Secret key",
+          "type": "vault"
+        },
+        {
+          "name": "REGION",
+          "viewName": "Region",
+          "type": "options",
+          "options": [
+            {
+              "id": "us-east-1",
+              "name": "US East (N. Virginia)"
+            },
+            {
+              "id": "us-west-1",
+              "name": "US West (N. California)"
+            },
+            {
+              "id": "us-west-2",
+              "name": "US West (Oregon)"
+            },
+            {
+              "id": "ap-southeast-1",
+              "name": "Asia Pacific (Singapore)"
+            },
+            {
+              "id": "ap-southeast-2",
+              "name": "Asia Pacific (Sydney)"
+            },
+            {
+              "id": "ap-northeast-1",
+              "name": "Asia Pacific (Tokyo)"
+            },
+            {
+              "id": "eu-west-1",
+              "name": "EU (Ireland)"
+            },
+            {
+              "id": "sa-east-1",
+              "name": "South America (São Paulo)"
+            },
+            {
+              "id": "eu-central-1",
+              "name": "EU (Frankfurt)"
+            }
+          ]
+        },
+        {
+          "name": "dbClusterIdentifier",
+          "viewName": "DB Cluster Identifier",
+          "type": "string"
+        },
+        {
+          "name": "scalingConfigurationMinCapacity",
+          "viewName": "Scaling Min Capacity",
+          "type": "string"
+        },
+        {
+          "name": "scalingConfigurationMaxCapacity",
+          "viewName": "Scaling Max Capacity",
+          "type": "string"
+        },
+        {
+          "name": "masterUserPassword",
+          "viewName": "Master User Password",
+          "type": "vault"
+        },
+        {
+          "name": "domain",
+          "viewName": "Domain",
+          "type": "string"
+        },
+        {
+          "name": "preferredBackupWindow",
+          "viewName": "Preferred Backup Window",
+          "type": "string"
+        },
+        {
+          "name": "preferredMaintenanceWindow",
+          "viewName": "Preferred Maintenance Window",
           "type": "string"
         }
       ]
