@@ -130,8 +130,8 @@
       ]
     },
     {
-      "name": "createDbInstance",
-      "viewName": "Create DB instance",
+      "name": "modifyDBCluster",
+      "viewName": "Modify DB Cluster",
       "params": [
         {
           "name": "AWS_ACCESS_KEY_ID",
