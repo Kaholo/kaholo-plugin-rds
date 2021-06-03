@@ -1,101 +1,113 @@
-const aws = require("aws-sdk");
+const { getRds, getAwsCallback, parseLegacyParam } = require("./helpers");
+const parsers = require("./parsers");
+const { getRegions } = require("./autocomplete");
 
-function _getRds(action,settings){
-    return new aws.RDS({
-        region: action.params.REGION,
-        accessKeyId: action.params.AWS_ACCESS_KEY_ID || settings.AWS_ACCESS_KEY_ID,
-        secretAccessKey: action.params.AWS_SECRET_ACCESS_KEY || settings.AWS_SECRET_ACCESS_KEY
-    })
-}
-
-function handleInstance(type){
-    return function(action, settings){
-        return new Promise((resolve,reject)=>{
-            
-            const rds = _getRds(action,settings);
-
-            function callback(err, result){
-                if (err) return reject(err);
-                resolve(result);
-            }
-
-            if(type=='new'){
-                let params = {
-                    DBInstanceClass: action.params.DB_INSTANCE_CLASS, /* required */
-                    DBInstanceIdentifier: action.params.DB_INSTANCE_IDENTIFIER, /* required */
-                    Engine: action.params.ENGINE, /* required */
-                }
-
-                if(action.params.ADDITIONAL_VALUES){
-                    let values;
-                    if(typeof(action.params.ADDITIONAL_VALUES)=='string'){
-                        try{ values = JSON.parse(action.params.ADDITIONAL_VALUES) }catch(err){}
-                    } else if(typeof(action.params.ADDITIONAL_VALUES)=='object'){
-                        values = action.params.ADDITIONAL_VALUES;
-                    }
-
-                    if(values){
-                        for(let key in values){
-                            params[key] == values[key];
-                        }
-                    }
-                }
-
-                rds.createDBInstance(params,callback)
-            } else {
-                let params = {
-                    DBInstanceIdentifier: action.params.DB_INSTANCE_IDENTIFIER, /* required */
-                    SkipFinalSnapshot: action.params.SKIP_FINAL_SNAPSHOT,
-                    FinalDBSnapshotIdentifier: action.params.FINAL_DB_SNAPSHOT_IDENTIFIER
-                }
-
-                rds.deleteDBInstance(params,callback);
-            }
-        })
+function createDbInstance(action, settings){
+    const rds = getRds(action, settings);
+    let params = {
+        DBInstanceClass: parsers.string(action.params.DB_INSTANCE_CLASS), /* required */
+        DBInstanceIdentifier: parsers.string(action.params.DB_INSTANCE_IDENTIFIER), /* required */
+        Engine: parsers.string(action.params.ENGINE), /* required */
+    };
+    if(action.params.ADDITIONAL_VALUES){
+        const values = parseLegacyParam(action.params.ADDITIONAL_VALUES, parsers.object);
+        if(values){
+            params = {...params, ...values};
+        }
     }
+    
+    return new Promise((resolve,reject)=>{
+        rds.createDBInstance(params, getAwsCallback(resolve, reject))
+    });
 }
 
-function modifyDBCluster(action,settings){
+async function deleteDbInstances(action, settings){
+    const rds = getRds(action, settings);
+    const params = {
+        DBInstanceIdentifier: parsers.string(action.params.DB_INSTANCE_IDENTIFIER), /* required */
+        SkipFinalSnapshot: action.params.SKIP_FINAL_SNAPSHOT,
+        FinalDBSnapshotIdentifier: parsers.string(action.params.FINAL_DB_SNAPSHOT_IDENTIFIER)
+    }
     return new Promise((resolve,reject)=>{
-        const rds = _getRds(action,settings);
+        rds.deleteDBInstance(params, getAwsCallback(resolve, reject));
+    });
+}
 
-        const params = {
-            DBClusterIdentifier : action.params.dbClusterIdentifier
+function modifyDBCluster(action, settings){
+    const rds = getRds(action, settings);
+
+    const params = {
+        DBClusterIdentifier : parsers.string(action.params.dbClusterIdentifier),
+        MasterUserPassword: action.params.masterUserPassword,
+        Domain: parsers.string(action.params.domain),
+        PreferredBackupWindow: parsers.string(action.params.preferredBackupWindow),
+        PreferredMaintenanceWindow: parsers.string(action.params.preferredMaintenanceWindow)
+    }
+    if(action.params.scalingConfigurationMinCapacity || action.params.scalingConfigurationMaxCapacity){
+        params.ScalingConfiguration = {
+            MinCapacity: parsers.number(action.params.scalingConfigurationMinCapacity),
+            MaxCapacity: parsers.number(action.params.scalingConfigurationMaxCapacity)
         }
+    }
+    return new Promise((resolve,reject)=>rds.modifyDBCluster(params, getAwsCallback(resolve, reject)));
+}
 
-        if(action.params.scalingConfigurationMinCapacity || action.params.scalingConfigurationMaxCapacity){
-            params.ScalingConfiguration = {
-                MinCapacity: action.params.scalingConfigurationMinCapacity,
-                MaxCapacity: action.params.scalingConfigurationMaxCapacity
-            }
+function createDBCluster(action, settings){
+    const rds = getRds(action, settings);
+    let params = {
+        DBClusterIdentifier: parsers.string(action.params.dbClusterIdentifier),
+        Engine: parsers.string(action.params.engine),
+        AvailabilityZones: parsers.array(action.params.availabilityZones),
+        MasterUsername: parsers.string(action.params.masterUsername),
+        MasterUserPassword: action.params.masterUserPassword,
+        PreferredBackupWindow: parsers.string(action.params.preferredBackupWindow),
+        PreferredMaintenanceWindow: parsers.string(action.params.preferredMaintenanceWindow),
+        Port: parsers.number(action.params.port),
+        VpcSecurityGroupIds: parsers.array(action.params.vpcSecurityGroupIds),
+        Tags: parsers.tags(action.params.tags)
+    };
+    if(action.params.scalingConfigurationMinCapacity || action.params.scalingConfigurationMaxCapacity){
+        params.ScalingConfiguration = {
+            MinCapacity: parsers.number(action.params.scalingConfigurationMinCapacity),
+            MaxCapacity: parsers.number(action.params.scalingConfigurationMaxCapacity)
         }
+    }
+    if (action.params.additionalParams){
+        const additional = parsers.object(action.params.additionalParams);
+        params = { ...params, ...additional};
+    }
+    return new Promise((resolve,reject)=>rds.createDBCluster(params, getAwsCallback(resolve, reject)));
+}
 
-        if(action.params.masterUserPassword){
-            params.MasterUserPassword = action.params.masterUserPassword;
-        }
+function createDBParameterGroup(action, settings){
+    const rds = getRds(action, settings);
+    const params = {
+        DBParameterGroupFamily: parsers.string(action.params.dbParameterGroupFamily),
+        DBParameterGroupName: parsers.string(action.params.name),
+        Description: parsers.string(action.params.description),
+        Tags: parsers.tags(action.params.tags)
+    };
+    return new Promise((resolve,reject)=>rds.createDBParameterGroup(params, getAwsCallback(resolve, reject)));
+}
 
-        if(action.params.domain){
-            params.Domain = action.params.domain;
-        }
-
-        if(action.params.preferredBackupWindow){
-            params.PreferredBackupWindow = action.params.preferredBackupWindow;
-        }
-
-        if(action.params.preferredMaintenanceWindow){
-            params.PreferredMaintenanceWindow = action.params.preferredMaintenanceWindow;
-        }
-
-        rds.modifyDBCluster(params, (err,result)=>{
-            if(err) return reject(err);
-            resolve(result)
-        })
-    })
-    
+function createDBSubnetGroup(action, settings){
+    const rds = getRds(action, settings);
+    const params = {
+        DBSubnetGroupName: parsers.string(action.params.name),
+        DBSubnetGroupDescription: parsers.string(action.params.description),
+        SubnetIds: parsers.array(action.params.subnetIds),
+        Tags: parsers.tags(action.params.tags)
+    };
+    return new Promise((resolve,reject)=>rds.createDBSubnetGroup(params, getAwsCallback(resolve, reject)));
 }
 
 module.exports = {
-    createDbInstance: handleInstance('new'),
-    deleteDbInstances: handleInstance('delete'),
-    modifyDBCluster : modifyDBCluster
+    createDbInstance,
+    deleteDbInstances,
+    modifyDBCluster,
+    createDBCluster,
+    createDBParameterGroup,
+    createDBSubnetGroup,
+    // auto complete
+    getRegions
 };
