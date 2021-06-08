@@ -1,6 +1,6 @@
 function parseArray(value){
     if (!value) return undefined;
-        if (typeof(value) === "string") return value.split("/n").map(line=>line.trim()).filter(line=>line);
+        if (typeof(value) === "string") return value.split("\n").map(line=>line.trim()).filter(line=>line);
         if (Array.isArray(value)) return value;
         throw "unsupported array format!";
 }
@@ -14,29 +14,23 @@ function parseTags(value){
         return value;
     }
     if (typeof(value) === "string"){
-        value = value.split("/n").map(line=>line.trim()).filter(line=>line);
-        value = value.map((line) => {
+        value = value.split("\n").map(line=>line.trim()).filter(line=>line);
+        return value.map((line) => {
             let [key, ...val] = line.split("=");
             if (Array.isArray(val)){
                 val = val.join("=");
             }
-            return [key, val];
+            return { Key: key, Value: val };
         });
     }
     if (typeof(value) === "object"){
-        value = object.entries(value);
+        return Object.entries(value).map(([key, val])=>{
+            return { Key: key, Value: val };
+        });
     }
-    else{
-        throw "Unsupported tags format!";
-    }
-    
-    return value.map(([key, val])=>{
-        if (!val){
-            return { Key: key };
-        }
-        return { Key: key, Value: val };
-    });
+    throw "Unsupported tags format!";
 }
+
 
 
 module.exports = {
@@ -59,7 +53,7 @@ module.exports = {
         if (!value) return undefined;
         if (typeof(value) === "object") return value;
         else if  (typeof(value) === "string") {
-            value = value.split("/n").map(line=>line.trim()).filter(line=>line);
+            value = value.split("\n").map(line=>line.trim()).filter(line=>line);
             const obj = {};
             return value.forEach(line => {
                 let [key, ...val] = line.split("=");
