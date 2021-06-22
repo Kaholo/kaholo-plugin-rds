@@ -1,6 +1,5 @@
 const { getRds, getAwsCallback, parseLegacyParam } = require("./helpers");
 const parsers = require("./parsers");
-const { getRegions } = require("./autocomplete");
 
 const CLUSTER_TYPE = "DB Cluster Parameter Group";
 
@@ -84,7 +83,7 @@ async function createDBParameterGroup(action, settings){
     const rds = getRds(action, settings);
     const name = parsers.string(action.params.name);
     const params = {
-        DBParameterGroupFamily: parsers.string(action.params.dbParameterGroupFamily),
+        DBParameterGroupFamily: parsers.autocomplete(action.params.dbParameterGroupFamily),
         Description: parsers.string(action.params.description),
         Tags: parsers.tags(action.params.tags)
     };
@@ -175,5 +174,5 @@ module.exports = {
     modifyDBParameterGroup,
     describeDBClusters,
     // auto complete
-    getRegions
+    ...require("./autocomplete")
 };
