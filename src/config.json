@@ -5,7 +5,7 @@
   "execProgram": "node",
   "exposeRoute": false,
   "imgUrl": "rdsicon.png",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "settings" : [
     {
       "name": "AWS_ACCESS_KEY_ID",
@@ -374,9 +374,81 @@
           "functionName": "getRegions"
         },
         {
+          "name": "REGION",
+          "viewName": "Region",
+          "type": "autocomplete",
+          "autocompleteType": "function",
+          "functionName": "getRegions"
+        },
+        {
+          "name": "engine",
+          "viewName": "Engine",
+          "type": "options",
+          "options": [
+            {
+              "id": "aurora",
+              "name": "aurora"
+            },
+            {
+              "id": "aurora-mysql",
+              "name": "aurora-mysql"
+            },
+            {
+              "id": "aurora-postgresql",
+              "name": "aurora-postgresql"
+            },
+            {
+              "id": "mariadb",
+              "name": "mariadb"
+            },
+            {
+              "id": "mysql",
+              "name": "mysql"
+            },
+            {
+              "id": "oracle-ee",
+              "name": "oracle-ee"
+            },
+            {
+              "id": "oracle-ee-cdb",
+              "name": "oracle-ee-cdb"
+            },
+            {
+              "id": "oracle-se2",
+              "name": "oracle-se2"
+            },
+            {
+              "id": "oracle-se2-cdb",
+              "name": "oracle-se2-cdb"
+            },
+            {
+              "id": "postgres",
+              "name": "postgres"
+            },
+            {
+              "id": "sqlserver-ee",
+              "name": "sqlserver-ee"
+            },
+            {
+              "id": "sqlserver-se",
+              "name": "sqlserver-se"
+            },
+            {
+              "id": "sqlserver-ex",
+              "name": "sqlserver-ex"
+            },
+            {
+              "id": "sqlserver-web",
+              "name": "sqlserver-web"
+            }
+          ]
+        },
+        {
           "name": "dbParameterGroupFamily",
           "viewName": "DB Parameter Group Family",
-          "type": "string"
+          "type": "autocomplete",
+          "autocompleteType": "function",
+          "functionName": "listDbParamGroupFamilies"
         },
         {
           "name": "name",
