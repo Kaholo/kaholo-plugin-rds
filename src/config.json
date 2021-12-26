@@ -5,7 +5,8 @@
   "execProgram": "node",
   "exposeRoute": false,
   "imgUrl": "rdsicon.png",
-  "version": "1.5.1",
+  "version": "1.5.2",
+  "category": "DATABASE",
   "settings" : [
     {
       "name": "AWS_ACCESS_KEY_ID",
