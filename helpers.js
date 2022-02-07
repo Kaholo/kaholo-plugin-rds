@@ -12,6 +12,14 @@ function getRds(action, settings) {
     });
 }
 
+function getLightsail(params, settings) {
+    return new aws.Lightsail({
+        region: parsers.autocomplete(params.REGION),
+        accessKeyId: params.AWS_ACCESS_KEY_ID || settings.AWS_ACCESS_KEY_ID,
+        secretAccessKey: params.AWS_SECRET_ACCESS_KEY || settings.AWS_SECRET_ACCESS_KEY
+    });
+}
+
 function getAwsCallback(resolve, reject){
     return (err, result)=>{
         if (err) return reject(err);
@@ -22,7 +30,7 @@ function getAwsCallback(resolve, reject){
 function parseLegacyParam(param, parseFunc) {
     try {
         if (typeof param == 'string') return JSON.parse(param);
-    } 
+    }
     catch (err) {}
     finally {
         return parseFunc(param);
@@ -32,5 +40,6 @@ function parseLegacyParam(param, parseFunc) {
 module.exports = {
     getAwsCallback,
     getRds,
+    getLightsail,
     parseLegacyParam
 }
