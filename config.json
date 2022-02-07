@@ -5,7 +5,7 @@
   "execProgram": "node",
   "exposeRoute": false,
   "imgUrl": "rdsicon.png",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "category": "DATABASE",
   "settings" : [
     {
@@ -298,7 +298,7 @@
             {
               "id": "multimaster",
               "name": "multimaster"
-            } 
+            }
           ]
         },
         {
