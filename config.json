@@ -5,7 +5,7 @@
   "execProgram": "node",
   "exposeRoute": false,
   "imgUrl": "rdsicon.png",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "category": "DATABASE",
   "settings" : [
     {
@@ -37,45 +37,9 @@
         {
           "name": "REGION",
           "viewName": "Region",
-          "type": "options",
-          "options": [
-            {
-              "id": "us-east-1",
-              "name": "US East (N. Virginia)"
-            },
-            {
-              "id": "us-west-1",
-              "name": "US West (N. California)"
-            },
-            {
-              "id": "us-west-2",
-              "name": "US West (Oregon)"
-            },
-            {
-              "id": "ap-southeast-1",
-              "name": "Asia Pacific (Singapore)"
-            },
-            {
-              "id": "ap-southeast-2",
-              "name": "Asia Pacific (Sydney)"
-            },
-            {
-              "id": "ap-northeast-1",
-              "name": "Asia Pacific (Tokyo)"
-            },
-            {
-              "id": "eu-west-1",
-              "name": "EU (Ireland)"
-            },
-            {
-              "id": "sa-east-1",
-              "name": "South America (São Paulo)"
-            },
-            {
-              "id": "eu-central-1",
-              "name": "EU (Frankfurt)"
-            }
-          ]
+          "type": "autocomplete",
+          "autocompleteType": "function",
+          "functionName": "listRegions"
         },
         {
           "name": "DB_INSTANCE_CLASS",
@@ -106,12 +70,12 @@
         {
           "name": "AWS_ACCESS_KEY_ID",
           "viewName": "Access key",
-          "type": "string"
+          "type": "vault"
         },
         {
           "name": "AWS_SECRET_ACCESS_KEY",
           "viewName": "Secret key",
-          "type": "string"
+          "type": "vault"
         },
         {
           "name": "DB_INSTANCE_IDENTIFIER",
@@ -147,45 +111,9 @@
         {
           "name": "REGION",
           "viewName": "Region",
-          "type": "options",
-          "options": [
-            {
-              "id": "us-east-1",
-              "name": "US East (N. Virginia)"
-            },
-            {
-              "id": "us-west-1",
-              "name": "US West (N. California)"
-            },
-            {
-              "id": "us-west-2",
-              "name": "US West (Oregon)"
-            },
-            {
-              "id": "ap-southeast-1",
-              "name": "Asia Pacific (Singapore)"
-            },
-            {
-              "id": "ap-southeast-2",
-              "name": "Asia Pacific (Sydney)"
-            },
-            {
-              "id": "ap-northeast-1",
-              "name": "Asia Pacific (Tokyo)"
-            },
-            {
-              "id": "eu-west-1",
-              "name": "EU (Ireland)"
-            },
-            {
-              "id": "sa-east-1",
-              "name": "South America (São Paulo)"
-            },
-            {
-              "id": "eu-central-1",
-              "name": "EU (Frankfurt)"
-            }
-          ]
+          "type": "autocomplete",
+          "autocompleteType": "function",
+          "functionName": "listRegions"
         },
         {
           "name": "dbClusterIdentifier",
@@ -248,7 +176,7 @@
           "viewName": "Region",
           "type": "autocomplete",
           "autocompleteType": "function",
-          "functionName": "getRegions"
+          "functionName": "listRegions"
         },
         {
           "name": "dbClusterIdentifier",
@@ -298,7 +226,7 @@
             {
               "id": "multimaster",
               "name": "multimaster"
-            } 
+            }
           ]
         },
         {
@@ -372,14 +300,7 @@
           "viewName": "Region",
           "type": "autocomplete",
           "autocompleteType": "function",
-          "functionName": "getRegions"
-        },
-        {
-          "name": "REGION",
-          "viewName": "Region",
-          "type": "autocomplete",
-          "autocompleteType": "function",
-          "functionName": "getRegions"
+          "functionName": "listRegions"
         },
         {
           "name": "engine",
@@ -512,7 +433,7 @@
           "viewName": "Region",
           "type": "autocomplete",
           "autocompleteType": "function",
-          "functionName": "getRegions"
+          "functionName": "listRegions"
         },
         {
           "name": "dbClusterIds",
@@ -540,7 +461,7 @@
           "viewName": "Region",
           "type": "autocomplete",
           "autocompleteType": "function",
-          "functionName": "getRegions"
+          "functionName": "listRegions"
         },
         {
           "name": "name",
@@ -583,7 +504,7 @@
           "viewName": "Region",
           "type": "autocomplete",
           "autocompleteType": "function",
-          "functionName": "getRegions"
+          "functionName": "listRegions"
         },
         {
           "name": "name",
